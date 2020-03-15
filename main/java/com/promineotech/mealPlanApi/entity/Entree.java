@@ -6,18 +6,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.promineotech.mealPlanApi.util.MealCategory;
 
 @Entity
 public class Entree {
 	
 	private long id;
 	private Set<Meal> meals; //on getter add @JsonIgnore
-	private MealCategory category;
+	private String category;
 	private String name;
 	private String ingredients;
 	
@@ -31,12 +29,14 @@ public class Entree {
 		this.id = id;
 	}
 	
-	public MealCategory getCategory() {
-		return category;
+	@JsonIgnore
+	@OneToMany(mappedBy = "entree")
+	public Set<Meal> getMeals() {
+		return meals;
 	}
-	
-	public void setCategory(MealCategory category) {
-		this.category = category;
+
+	public void setMeals(Set<Meal> meals) {
+		this.meals = meals;
 	}
 
 	public String getName() {
@@ -55,15 +55,12 @@ public class Entree {
 		this.ingredients = ingredients;
 	}
 
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "mealId")
-	public Set<Meal> getMeals() {
-		return meals;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setMeals(Set<Meal> meals) {
-		this.meals = meals;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 
